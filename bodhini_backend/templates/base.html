@@ -1,0 +1,95 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bodhini{% endblock %}</title>
+    <link rel="web icon" href="{% static 'images/web icon.jpg' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'services' %}">Services</a>
+            <a href="{% url 'events' %}">Events</a>
+            <a href="{% url 'contact' %}">Contact</a>
+
+            {% if user.is_authenticated %}
+                <div class="profile-dropdown">
+                    {# Profile Circle (User Image or Default) #}
+                    <div class="profile-circle" id="profileCircle">
+                        {# SIMPLIFIED CONDITION: Check if user.profile.image has *any* value #}
+                        {# This will display the uploaded image if one exists, otherwise fallback to social or static default #}
+                        {% if user.profile.image %}
+                            {# REMOVED .url HERE: Pass the ImageField object directly to the filter #}
+                            <img src="{{ user.profile.image|cachebust }}" alt="{{ user.username }}'s Profile Picture">
+                        {% elif user.socialaccount_set.all %}
+                            {% for socialaccount in user.socialaccount_set.all %}
+                                {% if socialaccount.provider == 'google' and socialaccount.extra_data.picture %}
+                                    <img src="{{ socialaccount.extra_data.picture }}" alt="{{ user.username }}'s Google Picture">
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {# This is for static default image, keep as is if it's in /static/images/ #}
+                            <img src="{% static 'images/default_profile.png' %}" alt="Default Profile Picture">
+                        {% endif %}
+                    </div>
+
+                    <div class="dropdown-content" id="profileDropdownContent">
+                        <a href="{% url 'profile' %}">Profile View</a>
+                        <form action="{% url 'logout' %}" method="post" style="display:block; margin:0; padding:0;">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-logout-button">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'login_register' %}">Login / Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Bodhini. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileCircle = document.getElementById('profileCircle');
+            const profileDropdownContent = document.getElementById('profileDropdownContent');
+
+            if (profileCircle && profileDropdownContent) {
+                profileCircle.addEventListener('click', function() {
+                    profileDropdownContent.classList.toggle('show');
+                });
+
+                window.addEventListener('click', function(event) {
+                    if (!event.target.matches('.profile-circle') && !event.target.closest('.profile-dropdown')) {
+                        if (profileDropdownContent.classList.contains('show')) {
+                            profileDropdownContent.classList.remove('show');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

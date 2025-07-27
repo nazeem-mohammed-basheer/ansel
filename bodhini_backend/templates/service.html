@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Services - BODHINI{% endblock %}
+
+{% block content %}
+    <section class="services-section">
+        <h2>Our Services</h2>
+        <p>BODHINI offers a range of services designed to support your journey towards mindful living and personal well-being.</p>
+
+        <div class="service-list">
+            <div class="service-item">
+                <h3>Mindfulness Workshops</h3>
+                <p>Engage in interactive workshops focusing on various mindfulness techniques, meditation practices, and stress reduction strategies.</p>
+                <ul>
+                    <li>Introduction to Mindfulness</li>
+                    <li>Mindful Breathing & Body Scan</li>
+                    <li>Emotional Regulation through Mindfulness</li>
+                </ul>
+            </div>
+
+            <div class="service-item">
+                <h3>Personalized Coaching</h3>
+                <p>Receive one-on-one guidance from experienced mindfulness coaches to address your specific needs and goals.</p>
+                <ul>
+                    <li>Stress Management Coaching</li>
+                    <li>Mindful Leadership Training</li>
+                    <li>Well-being & Resilience Coaching</li>
+                </ul>
+            </div>
+
+            <div class="service-item">
+                <h3>Meditation Sessions</h3>
+                <p>Join our guided meditation sessions, suitable for both beginners and experienced practitioners, available online and in-person.</p>
+                <ul>
+                    <li>Daily Guided Meditations</li>
+                    <li>Silent Retreats</li>
+                    <li>Group Meditation Circles</li>
+                </ul>
+            </div>
+
+            <div class="service-item">
+                <h3>Resource Library</h3>
+                <p>Access a curated collection of articles, videos, audio guides, and recommended readings on mindfulness, psychology, and holistic health.</p>
+                <ul>
+                    <li>Mindfulness Articles & Blogs</li>
+                    <li>Guided Audio Meditations</li>
+                    <li>Recommended Books & Apps</li>
+                </ul>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 30px;">
+            <a href="{% url 'contact' %}" class="btn">Enquire About Services</a>
+        </p>
+    </section>
+
+    <style>
+        /* Add specific styles for the services page here, or in style.css */
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .service-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .service-item h3 {
+            color: #5cb85c;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .service-item ul {
+            list-style: disc;
+            margin-left: 20px;
+            padding: 0;
+            color: #666;
+            font-size: 0.95em;
+        }
+        .service-item ul li {
+            margin-bottom: 5px;
+        }
+    </style>
+{% endblock %}

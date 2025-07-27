@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %} {# Ensure custom_filters are loaded for image URLs #}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<div class="event-detail-container">
+    <h1>{{ event.title }}</h1>
+    <div class="event-detail-header">
+        {% if event.event_image %}
+            <img src="{{ event.event_image|cachebust }}" alt="{{ event.title }}" class="event-detail-img">
+        {% else %}
+            <img src="{% static 'images/default_event_detail.png' %}" alt="Default Event Image" class="event-detail-img">
+        {% endif %}
+    </div>
+
+    <div class="event-detail-info">
+        <p><strong>Status:</strong> <span class="event-status {{ event.get_status }}">{{ event.get_status|capfirst }}</span></p>
+        <p><strong>Date & Time:</strong> {{ event.start_datetime|date:"M d, Y" }} at {{ event.start_datetime|time:"H:i" }} IST</p>
+        {% if event.duration_hours %}
+            <p><strong>Duration:</strong> {{ event.duration_hours }} hours</p>
+        {% endif %}
+        {% if event.main_speaker %}
+            <p><strong>Main Speaker:</strong> {{ event.main_speaker }}</p>
+        {% endif %}
+
+        <h3>About the Event</h3>
+        <p>{{ event.about_event|linebreaksbr }}</p>
+
+        <div class="event-action">
+            {% if registration_open and event.registration_link %}
+                <a href="{{ event.registration_link }}" target="_blank" class="btn btn-primary">Register Now</a>
+            {% elif not registration_open and event.registration_link %}
+                {# Display a message if registration is closed but a link exists #}
+                <p class="registration-closed-message">Registration is now closed for this event.</p>
+            {% else %}
+                {# No registration link provided at all #}
+                <p>Registration details will be announced soon.</p>
+            {% endif %}
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'events' %}" class="btn btn-secondary">← Back to All Events</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

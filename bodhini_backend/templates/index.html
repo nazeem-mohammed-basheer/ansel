@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Bodhini{% endblock %}
+
+{% block content %}
+    <main class="homepage-layout"> <!-- Added homepage-layout class to main, assuming 'main' is within 'base.html' and can accept classes -->
+        <div class="content-left">
+            <div class="homepage-content">
+                <h1>Welcome to Bodhini: Empowering Minds, Building Futures</h1>
+                <p class="lead-text">
+                    At Bodhini, we believe in the power of knowledge and community to transform lives.
+                    We are dedicated to providing accessible resources, fostering meaningful connections,
+                    and supporting your journey of growth and learning.
+                </p>
+
+                <section class="mission-statement">
+                    <h2>Our Mission</h2>
+                    <p>
+                        To create a vibrant platform where individuals can explore, learn, and connect.
+                        We aim to demystify complex concepts, encourage critical thinking, and build a supportive network for everyone.
+                    </p>
+                </section>
+
+                <section class="explore-sections">
+                    <h2>Explore Our Offerings</h2>
+                    <p>Dive into a variety of topics, engage with our community, and discover new perspectives.</p>
+                    <ul>
+                        <li><a href="{% url 'services' %}"><strong>Services:</strong> Learn about the core programs and support we offer.</a></li>
+                        <li><a href="{% url 'events' %}"><strong>Events:</strong> Join our upcoming workshops, webinars, and community gatherings.</a></li>
+                        <li><a href="{% url 'about' %}"><strong>About Us:</strong> Discover our story, values, and the team behind Bodhini.</a></li>
+                        <li><a href="{% url 'contact' %}"><strong>Contact Us:</strong> Have questions? Reach out to us anytime!</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <div class="content-right">
+            <div class="homepage-image-section">
+                <img src="{% static 'images/web icon.jpg' %}" alt="Bodhini Community">
+                <p class="image-caption">Join our growing community today!</p>
+            </div>
+
+            <section class="call-to-action">
+                <h3>Ready to begin your journey?</h3>
+                {% if not user.is_authenticated %}
+                    <p>
+                        <a href="{% url 'login_register' %}" class="btn btn-primary">Sign Up or Login Now</a>
+                    </p>
+                {% else %}
+                    <p>You're already part of the Bodhini family! Explore your <a href="{% url 'profile' %}">profile</a> or discover more.</p>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+{% endblock %}

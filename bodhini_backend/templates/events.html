@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %} {# Ensure custom_filters are loaded for image URLs #}
+
+{% block title %}Our Events{% endblock %}
+
+{% block content %}
+<div class="events-page-container">
+    <h1>Bodhini Events</h1>
+    <p class="lead-text">Explore our upcoming, ongoing, and past events.</p>
+
+    <section class="event-category">
+        <h2>Ongoing Events</h2>
+        {% if ongoing_events %}
+            <div class="event-cards-container">
+                {% for event in ongoing_events %}
+                    <a href="{{ event.get_absolute_url }}" class="event-card-link"> {# Make the entire card area clickable #}
+                        <div class="event-card" data-event-id="{{ event.slug }}">
+                            <div class="event-image-wrapper"> {# Wrapper for the circle #}
+                                {% if event.event_image %}
+                                    <img src="{{ event.event_image|cachebust }}" alt="{{ event.title }}" class="event-circular-img">
+                                {% else %}
+                                    {# Use a default image for circular cards #}
+                                    <img src="{% static 'images/default_event_circle.png' %}" alt="Default Event Image" class="event-circular-img">
+                                {% endif %}
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ event.title }}</h3> {# Only event name needed #}
+                                <p class="event-status {{ event.get_status }}">{{ event.get_status|capfirst }}</p> {# Add status back #}
+                                {# Removed other details like event-time, event-speaker #}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No ongoing events at the moment. Check back soon!</p>
+        {% endif %}
+    </section>
+
+    <section class="event-category">
+        <h2>Upcoming Events</h2>
+        {% if upcoming_events %}
+            <div class="event-cards-container">
+                {% for event in upcoming_events %}
+                    <a href="{{ event.get_absolute_url }}" class="event-card-link"> {# Make the entire card area clickable #}
+                        <div class="event-card" data-event-id="{{ event.slug }}">
+                            <div class="event-image-wrapper">
+                                {% if event.event_image %}
+                                    <img src="{{ event.event_image|cachebust }}" alt="{{ event.title }}" class="event-circular-img">
+                                {% else %}
+                                    <img src="{% static 'images/default_event_circle.png' %}" alt="Default Event Image" class="event-circular-img">
+                                {% endif %}
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ event.title }}</h3>
+                                <p class="event-status {{ event.get_status }}">{{ event.get_status|capfirst }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No upcoming events scheduled. Stay tuned!</p>
+        {% endif %}
+    </section>
+
+    <section class="event-category">
+        <h2>Previous Events</h2>
+        {% if previous_events %}
+            <div class="event-cards-container">
+                {% for event in previous_events %}
+                    <a href="{{ event.get_absolute_url }}" class="event-card-link"> {# Make the entire card area clickable #}
+                        <div class="event-card event-card-previous" data-event-id="{{ event.slug }}">
+                            <div class="event-image-wrapper">
+                                {% if event.event_image %}
+                                    <img src="{{ event.event_image|cachebust }}" alt="{{ event.title }}" class="event-circular-img">
+                                {% else %}
+                                    <img src="{% static 'images/default_event_circle.png' %}" alt="Default Event Image" class="event-circular-img">
+                                {% endif %}
+                            </div>
+                            <div class="card-content">
+                                <h3>{{ event.title }}</h3>
+                                <p class="event-status {{ event.get_status }}">{{ event.get_status|capfirst }}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No previous events recorded yet.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

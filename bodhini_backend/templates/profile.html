@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %} {# This line MUST be present and correct #}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-picture-display">
+            {# This is the critical part for cache busting #}
+            {# CORRECTED: Use 'user.profile.image' and simplified the condition #}
+            {% if user.profile.image %}
+                <img src="{{ user.profile.image|cachebust }}" alt="{{ user.username }}'s Profile Picture">
+            {% elif user.socialaccount_set.all %}
+                {% for socialaccount in user.socialaccount_set.all %}
+                    {% if socialaccount.provider == 'google' and socialaccount.extra_data.picture %}
+                        <img src="{{ socialaccount.extra_data.picture }}" alt="{{ user.username }}'s Google Picture">
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="Default Profile Picture">
+            {% endif %}
+        </div>
+        <h2>{{ user.username }}</h2>
+        <p class="profile-email">{{ user.email }}</p>
+
+        {% if user.is_authenticated and user == request.user %}
+        <div class="profile-actions">
+            <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Edit Profile</a>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login / Register{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div id="login-section">
+        <h2>Login</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Login</button>
+            </div>
+            <p class="mt-3" style="text-align: center;">
+                <a href="{% url 'password_reset' %}" style="color: #5cb85c; text-decoration: none;">Forgot password?</a>
+            </p>
+        </form>
+        <p style="text-align: center; margin-top: 20px;">
+            Don't have an account? <button type="button" id="show-register-button" style="background: none; border: none; color: #5cb85c; cursor: pointer; text-decoration: underline;">Register here</button>
+        </p>
+    </div>
+
+    <hr> {# Separator between login and register forms #}
+
+    <div id="register-section" style="display:none;"> {# Initially hidden #}
+        <h2>Register</h2>
+        <form id="register-form" method="post" action="{% url 'api_register' %}">
+            {% csrf_token %} {# This is crucial for Django to set the csrftoken cookie #}
+            <div class="form-group">
+                <label for="reg_username">Username:</label>
+                <input type="text" id="reg_username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="reg_email">Email:</label>
+                <input type="email" id="reg_email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="reg_password1">Password:</label>
+                <input type="password" id="reg_password1" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="reg_password2">Confirm Password:</label>
+                <input type="password" id="reg_password2" name="password2" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Register</button>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">
+                Already have an account? <button type="button" id="show-login-button" style="background: none; border: none; color: #5cb85c; cursor: pointer; text-decoration: underline;">Login here</button>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginSection = document.getElementById('login-section');
+        const registerSection = document.getElementById('register-section');
+        const showRegisterButton = document.getElementById('show-register-button');
+        const showLoginButton = document.getElementById('show-login-button');
+        const registerForm = document.getElementById('register-form');
+        const messagesContainer = document.querySelector('.messages'); // Get the messages container
+
+        // --- Helper function to get CSRF token from cookies ---
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            // Debugging: Log the retrieved CSRF token
+            if (cookieValue) {
+                console.log(`CSRF Token (${name}) retrieved from cookie:`, cookieValue);
+            } else {
+                console.error(`CSRF Token (${name}) NOT found in cookies. Ensure {% csrf_token %} is in your Django template.`);
+            }
+            return cookieValue;
+        }
+
+        if (showRegisterButton) {
+            showRegisterButton.addEventListener('click', function() {
+                loginSection.style.display = 'none';
+                registerSection.style.display = 'block';
+                if (messagesContainer) messagesContainer.innerHTML = ''; // Clear messages when switching forms
+            });
+        }
+
+        if (showLoginButton) {
+            showLoginButton.addEventListener('click', function() {
+                registerSection.style.display = 'none';
+                loginSection.style.display = 'block';
+                if (messagesContainer) messagesContainer.innerHTML = ''; // Clear messages when switching forms
+            });
+        }
+
+        // JavaScript for handling the registration form submission via AJAX
+        if (registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(registerForm);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    // Exclude the csrfmiddlewaretoken from the JSON body
+                    if (key !== 'csrfmiddlewaretoken') {
+                        data[key] = value;
+                    }
+                }
+
+                const csrftoken = getCookie('csrftoken'); // Get CSRF token from cookie
+
+                if (!csrftoken) {
+                    console.error("CSRF token is missing. Cannot submit registration.");
+                    if (messagesContainer) {
+                        const errorLi = document.createElement('li');
+                        errorLi.className = 'error';
+                        errorLi.textContent = 'Registration failed: CSRF token missing. Please refresh the page.';
+                        messagesContainer.appendChild(errorLi);
+                    }
+                    return;
+                }
+
+                fetch(registerForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken, // Use token from cookie
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data), // Send only actual form data
+                })
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json().then(json => ({
+                            status: response.status,
+                            ok: response.ok,
+                            json
+                        }));
+                    } else {
+                        return response.text().then(text => ({ status: response.status, ok: response.ok, text }));
+                    }
+                })
+                .then(({ status, ok, json, text }) => {
+                    if (messagesContainer) {
+                        messagesContainer.innerHTML = ''; // Clear previous messages
+                    }
+
+                    if (ok) {
+                        console.log('Registration successful:', json);
+                        const successMessage = document.createElement('li');
+                        successMessage.className = 'success';
+                        successMessage.textContent = json.message || 'Registration successful!';
+                        if (messagesContainer) messagesContainer.appendChild(successMessage);
+
+                        setTimeout(() => {
+                            // After successful registration, show the login form
+                            registerSection.style.display = 'none';
+                            loginSection.style.display = 'block';
+                            if (messagesContainer) messagesContainer.innerHTML = ''; // Clear messages after redirect
+                        }, 1500);
+                    } else {
+                        console.error('Registration failed:', json || text);
+                        let errorMessage = 'Registration failed. Please check your input.';
+                        if (json && json.detail) {
+                            errorMessage = json.detail;
+                        } else if (json) {
+                            errorMessage = ''; // Reset for detailed messages
+                            for (const key in json) {
+                                if (Array.isArray(json[key])) {
+                                    errorMessage += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${json[key].join(', ')}\n`;
+                                } else {
+                                    errorMessage += `${key.charAt(0).toUpperCase() + key.slice(1)}: ${json[key]}\n`;
+                                }
+                            }
+                        } else if (text) {
+                            // Fallback for non-JSON error responses (e.g., 403 Forbidden HTML page)
+                            errorMessage = `Server Error (${status}): ${text.substring(0, 100)}...`; // Show first 100 chars
+                        }
+
+                        const errorLi = document.createElement('li');
+                        errorLi.className = 'error';
+                        errorLi.textContent = errorMessage;
+                        if (messagesContainer) messagesContainer.appendChild(errorLi);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    if (messagesContainer) {
+                        const errorLi = document.createElement('li');
+                        errorLi.className = 'error';
+                        errorLi.textContent = 'An unexpected error occurred. Please try again.';
+                        messagesContainer.appendChild(errorLi);
+                    }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <main> {# Assuming 'main' is defined in base.html or will be wrapped as part of the block content #}
+        <section class="about-us-section">
+            <h1>About Us</h1>
+            <p>
+                Welcome to our platform! We are dedicated to building a vibrant and inclusive community around shared interests and passions. Our goal is to provide a seamless and engaging experience for connecting people through various events and activities.
+            </p>
+            <p>
+                Founded in [Year], we started with a simple idea: to make it easier for individuals to discover, participate in, and even organize events that matter to them. Whether you're looking to learn a new skill, meet like-minded individuals, or simply have fun, we've got something for everyone.
+            </p>
+            <p>
+                Our team is a diverse group of **8** enthusiasts, developers, and community managers who are passionate about bringing people together. We believe that shared experiences enrich lives and foster stronger communities. We are constantly working to improve our platform and expand our offerings, ensuring that you always find something exciting to engage with.
+            </p>
+            <p>
+                Join us on this journey as we continue to grow and create more opportunities for connection and collaboration. We are committed to transparency, innovation, and user satisfaction.
+            </p>
+
+            <div class="homepage-image-section">
+                <img src="{% static 'images/community.jpg' %}" alt="Community picture"> {# Changed to a placeholder static path for about us image #}
+                <p class="image-caption">
+                    Connecting people and building stronger communities.
+                </p>
+            </div>
+
+            <h2>Our Mission</h2>
+            <p>
+                To empower individuals to connect, learn, and grow by providing an intuitive and dynamic platform for discovering and participating in a wide array of events and activities.
+            </p>
+
+            <h2>Our Values</h2>
+            <ul>
+                <li><strong>Community:</strong> Fostering a sense of belonging and collaboration.</li>
+                <li><strong>Innovation:</strong> Continuously improving our platform and offerings.</li>
+                <li><strong>Accessibility:</strong> Making events and connections available to everyone.</li>
+                <li><strong>Integrity:</strong> Operating with transparency and trust.</li>
+                <li><strong>Engagement:</strong> Creating meaningful and memorable experiences.</li>
+            </ul>
+        </section>
+
+        <!-- New Section for Team Members -->
+        <section class="our-team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-cards-container">
+                <div class="team-card" data-member-id="Rashmi Raman p">
+                    <img src="{% static 'images/team/member1.jpg' %}" alt="Team Member 1" class="team-member-image">
+                    <h3>Rashmi Raman p</h3>
+                  
+                </div>
+                <div class="team-card" data-member-id="Manju.C.M">
+                    <img src="{% static 'images/team/member2.jpg' %}" alt="Team Member 2" class="team-member-image">
+                    <h3>Manju. C. M</h3>
+                
+                </div>
+                <div class="team-card" data-member-id="Sreelatha VK">
+                    <img src="{% static 'images/team/member3.jpg' %}" alt="Team Member 3" class="team-member-image">
+                    <h3>Sreelatha VK</h3>
+                  
+                </div>
+                <div class="team-card" data-member-id="Sumitha Chandran V">
+                    <img src="{% static 'images/team/member4.jpg' %}" alt="Team Member 4" class="team-member-image">
+                    <h3>Sumitha Chandran V</h3>
+                    
+                </div>
+                <div class="team-card" data-member-id="Dr. Anuja AK">
+                    <img src="{% static 'images/team/member5.jpg' %}" alt="Team Member 5" class="team-member-image">
+                    <h3>Dr. Anuja AK</h3>
+                    
+                </div>
+                <div class="team-card" data-member-id="member6">
+                    <img src="{% static 'images/team/member6.jpg' %}" alt="Team Member 6" class="team-member-image">
+                    <h3>Member Six</h3>
+                    
+                </div>
+                <div class="team-card" data-member-id="member7">
+                    <img src="{% static 'images/team/member7.jpg' %}" alt="Team Member 7" class="team-member-image">
+                    <h3>Member Seven</h3>
+                   
+                </div>
+                <div class="team-card" data-member-id="member8">
+                    <img src="{% static 'images/team/member8.jpg' %}" alt="Team Member 8" class="team-member-image">
+                    <h3>Member Eight</h3>
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {# The modal and its script should generally be placed in base.html if used across multiple pages. #}
+    {# For now, keeping it here to ensure functionality without base.html context. #}
+    {# If base.html provides a common modal, this part can be removed/adjusted. #}
+    <div id="teamDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modalTeamImage" class="modal-team-image" src="" alt="Team Member">
+            <h3 id="modalTeamName" class="modal-team-name"></h3>
+            <p id="modalTeamRole" class="modal-team-role"></p>
+            <p id="modalTeamBio" class="modal-team-bio"></p>
+            <p id="modalqualifications" class="modal-team-role"></p>
+        </div>
+    </div>
+
+    <script>
+        // Team member data
+        const teamMembers = [
+            {
+                id: 'Rashmi Raman p',
+                name: 'Rashmi Raman p',
+                role: ' child development project officer',
+                qualifications: 'qualifications: Msw medical and psychiatry specialisation',
+                image: '{% static "images/team/member1.jpg" %}',
+                bio: ''
+            },
+            {
+                id: 'Manju.C.M',
+                name: 'Manju.C.M',
+                role: 'Divisional Waqf Officer',
+                qualifications: 'qualifications:BBA, LLB',
+                image: '{% static "images/team/member2.jpg" %}',
+                bio: ''
+            },
+            {
+                id: 'Sreelatha VK',
+                name: 'Sreelatha VK',
+                role: 'Special Educator',
+                qualifications: 'qualifications:MA Economics,Diploma in Special Education,BEd Special Education',
+                image: '{% static "images/team/member3.jpg" %}',
+                bio: ''            
+            },
+            {
+                id: 'Sumitha Chandran V',
+                name: 'Sumitha Chandran V',
+                role: 'UPST ',
+                qualifications: 'qualifications:M Sc. Botany,B Ed. SET, Msc Psyvhology',
+                image: '{% static "images/team/member4.jpg" %}',
+                bio: ''             
+            },
+            {
+                id: 'Dr. Anuja AK',
+                name: 'Dr. Anuja AK',
+                role: 'MEDICAL OFFICER (AYUSH HOMOEO DISPENSARY)',
+                qualifications: 'qualifications:BHMS, PG-DIPLOMA IN COUNSELING,MSC APPLIED PSYCHOLOGY',
+                image: '{% static "images/team/member5.jpg" %}',
+                bio: '' 
+            },
+            {
+                id: 'member6',
+                name: 'Member Six',
+                role: 'Backend Engineer',
+                qualifications: 'qualifications:',
+                image: '{% static "images/team/member6.jpg" %}',
+                bio: ''             
+            },
+            {
+                id: 'member7',
+                name: 'Member Seven',
+                role: 'Content Creator',
+                qualifications: 'qualifications:',
+                image: '{% static "images/team/member7.jpg" %}',
+                bio: ''             
+            },
+            {
+                id: 'member8',
+                name: 'Member Eight',
+                role: 'Quality Assurance',
+                qualifications: 'qualifications:',
+                image: '{% static "images/team/member8.jpg" %}',
+                bio: ''             
+            },
+            {
+                id: 'member8',
+                name: 'Member Eight',
+                role: 'Quality Assurance',
+                qualifications: 'qualifications:',
+                image: '{% static "images/team/member8.jpg" %}',
+                bio: ''             
+            },
+            {
+                id: 'member8',
+                name: 'Member Eight',
+                role: 'Quality Assurance',
+                qualifications: 'qualifications:',
+                image: '{% static "images/team/member8.jpg" %}',
+                bio: ''             
+            }
+        ];
+
+        // Get the modal and its elements
+        const modal = document.getElementById('teamDetailModal');
+        const closeButton = document.querySelector('.close-button');
+        const modalTeamImage = document.getElementById('modalTeamImage');
+        const modalTeamName = document.getElementById('modalTeamName');
+        const modalTeamRole = document.getElementById('modalTeamRole');
+        const modalTeamBio = document.getElementById('modalTeamBio');
+
+        // Get all team cards
+        const teamCards = document.querySelectorAll('.team-card');
+
+        // A flag to prevent click event from firing after a long press
+        let isModalCurrentlyOpen = false;
+
+        // Function to open the modal
+        function openTeamDetailModal(memberId) {
+            // If modal is already open, do nothing
+            if (isModalCurrentlyOpen) return;
+
+            const member = teamMembers.find(m => m.id === memberId);
+            if (member) {
+                modalTeamImage.src = member.image;
+                modalTeamName.textContent = member.name;
+                modalTeamRole.textContent = member.role;
+                 modalqualifications.textContent = member.qualifications;
+                modalTeamBio.textContent = member.bio;
+                modal.classList.add('show-modal'); // Add class to show modal with animation
+                isModalCurrentlyOpen = true; // Set flag to true
+            }
+        }
+
+        // Function to close the modal
+        function closeTeamDetailModal() {
+            modal.classList.remove('show-modal'); // Remove class to hide modal with animation
+            isModalCurrentlyOpen = false; // Reset flag to false
+        }
+
+        // Add event listeners to each team card for click and long press
+        teamCards.forEach(card => {
+            const memberId = card.getAttribute('data-member-id'); // Get member ID from data attribute
+            let holdTimer; // Timer for the long press
+
+            // Mouse down / Touch start event
+            card.addEventListener('mousedown', (event) => {
+                if (event.button === 2) return; // Prevent right-click from starting a hold
+                holdTimer = setTimeout(() => {
+                    openTeamDetailModal(memberId);
+                }, 5000); // 5 seconds
+            });
+            card.addEventListener('touchstart', () => {
+                holdTimer = setTimeout(() => {
+                    openTeamDetailModal(memberId);
+                }, 5000); // 5 seconds
+            }, { passive: true }); // Use passive to avoid blocking scrolling on mobile
+
+            // Mouse up / Touch end / Mouse leave event
+            const clearHoldTimer = () => {
+                clearTimeout(holdTimer);
+            };
+
+            card.addEventListener('mouseup', clearHoldTimer);
+            card.addEventListener('mouseleave', clearHoldTimer);
+            card.addEventListener('touchend', clearHoldTimer);
+            card.addEventListener('touchcancel', clearHoldTimer); // For interrupted touches
+
+            // Click event - should only fire if modal wasn't opened by a hold
+            card.addEventListener('click', () => {
+                clearHoldTimer(); // Clear any ongoing hold timer
+                if (!isModalCurrentlyOpen) {
+                    openTeamDetailModal(memberId);
+                }
+            });
+        });
+
+        // When the user clicks on (x), close the modal
+        closeButton.addEventListener('click', closeTeamDetailModal);
+
+        // When the user clicks anywhere outside of the modal content, close it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeTeamDetailModal();
+            }
+        });
+    </script>
+{% endblock %}

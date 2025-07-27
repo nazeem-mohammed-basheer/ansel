@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define CSS Variables for the Color Palette */
+        :root {
+            --primary-color: #4A90E2; /* Bright Medium Blue - trust, clarity, openness */
+            --secondary-color: #63B179; /* Soft Green - growth, harmony, freshness */
+            --accent-color: #F8D88E; /* Muted Gold/Yellow - warmth, intellect, optimism */
+            --background-light: #F0F4F8; /* Light Grayish Blue - clean, spacious, calm */
+            --background-card: #FFFFFF; /* White for cards/main content blocks */
+            --text-dark: #3C4858; /* Charcoal Gray - readability, sophistication */
+            --text-light: #FFFFFF; /* White for text on dark backgrounds */
+            --border-color: #DDE1E6; /* Light gray border for general use */
+        }
+
+        /* General Body and HTML Reset */
+        body {
+            font-family: 'Inter', sans-serif; /* Changed to Inter */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light); /* Using new background color */
+            color: var(--text-dark); /* Using new text color */
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: var(--primary-color); /* Using new primary color */
+            color: var(--text-light); /* Light text on primary background */
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+        }
+
+        header nav {
+            display: flex; /* Make nav items a flex container */
+            justify-content: space-between; /* Space out items */
+            align-items: center; /* Vertically align items */
+            padding: 10px 20px; /* Example padding for the nav container */
+        }
+
+        header nav a {
+            color: var(--text-light); /* Nav links light text */
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevent wrapping for nav items */
+        }
+
+        header nav a:hover {
+            background-color: var(--secondary-color); /* Hover effect using secondary color */
+        }
+
+        /* Main Content Area */
+        main {
+            padding: 2rem;
+            max-width: 960px;
+            margin: 20px auto;
+            background-color: var(--background-card); /* White for main content block */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger shadow for main block */
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color); /* Headings with primary color */
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Forms */
+        form {
+            margin-top: 20px;
+            background-color: var(--background-light); /* Light background for forms */
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color); /* New border color */
+        }
+
+        form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-dark); /* Ensure label text is dark */
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="file"],
+        form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border-color); /* New border color */
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form button[type="submit"] {
+            background-color: var(--primary-color); /* Submit button primary color */
+            color: var(--text-light); /* Light text on button */
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: var(--secondary-color); /* Hover effect secondary color */
+        }
+
+        /* Messages (Django messages framework) */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .messages li {
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .messages .success {
+            background-color: #d4edda; /* Keep Bootstrap-like greens for success */
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .messages .error {
+            background-color: #f8d7da; /* Keep Bootstrap-like reds for error */
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .messages .info {
+            background-color: #d1ecf1; /* Keep Bootstrap-like blues for info */
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .messages .warning {
+            background-color: #fff3cd; /* Keep Bootstrap-like yellows for warning */
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        /* Profile specific styles */
+        .profile-picture-display { /* This wraps the profile image */
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-picture-display img { /* Specific styles for the actual profile image */
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem auto; /* Center the image */
+            border: 3px solid var(--accent-color); /* Border using accent color */
+        }
+
+        .profile-container {
+            padding: 20px;
+            background-color: var(--background-card);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 20px;
+        }
+
+        .profile-email {
+            color: var(--text-dark);
+            font-size: 0.95em;
+            margin-top: -0.5rem;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+        }
+
+        .profile-actions .btn-secondary { /* Using generic btn styles */
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-actions .btn-secondary:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--primary-color); /* Footer matches header */
+            color: var(--text-light);
+            margin-top: 20px;
+        }
+
+        /* Basic structure for login/register page if you want columns */
+        .auth-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px; /* Add padding to container */
+        }
+
+        .auth-container > div {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: var(--background-card); /* Use card background for auth boxes */
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Soft shadow for auth boxes */
+        }
+
+        .auth-container hr {
+            width: 100%;
+            border: none;
+            border-top: 1px solid var(--border-color); /* New border color for hr */
+            margin: 20px 0;
+        }
+
+        /* Simple .as_p styling for forms */
+        form p {
+            margin-bottom: 1rem;
+        }
+
+        form p label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        form p input,
+        form p textarea,
+        form p select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: var(--text-dark); /* Ensure input text is dark */
+        }
+
+        form p .helptext {
+            font-size: 0.9em;
+            color: var(--text-dark); /* Dark help text */
+            margin-top: 0.3rem;
+        }
+
+        form p .errorlist {
+            color: #dc3545; /* Red for errors */
+            font-size: 0.9em;
+            list-style: none;
+            padding: 0;
+            margin: 0.2rem 0 0.5rem 0;
+        }
+
+        /* New CSS for Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+            margin-left: auto;
+            padding-right: 20px; /* Space from right edge */
+        }
+
+        .profile-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: var(--secondary-color); /* Fallback/background for circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--accent-color); /* Accent color border */
+        }
+
+        .profile-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--background-card); /* Card background for dropdown */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100; /* High z-index to ensure visibility */
+            right: 0;
+            top: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid var(--border-color); /* New border for dropdown */
+        }
+
+        .dropdown-content a {
+            color: var(--text-dark); /* Dark text for dropdown links */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--background-light); /* Hover background light */
+        }
+
+        .dropdown-content .dropdown-logout-button {
+            background: none;
+            border: none;
+            color: var(--text-dark); /* Dark text for logout button */
+            padding: 12px 16px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            display: block;
+            font-size: inherit;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .dropdown-content .dropdown-logout-button:hover {
+            background-color: var(--background-light);
+        }
+
+        .show {
+            display: block;
+        }
+
+        /* --- Homepage specific styles (from previous index.html text) --- */
+        .homepage-content {
+            text-align: center;
+        }
+
+        .lead-text {
+            font-size: 1.1em;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .mission-statement, .explore-sections, .call-to-action, .homepage-image-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: var(--background-card); /* Changed to card background */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color); /* Added border */
+        }
+
+        .explore-sections ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .explore-sections li {
+            margin-bottom: 10px;
+        }
+
+        .explore-sections li a {
+            color: var(--secondary-color); /* Links use secondary color */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .explore-sections li a:hover {
+            text-decoration: underline;
+        }
+
+        .homepage-image-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        /* --- Event List Page Styles --- */
+        .events-page-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: var(--background-card);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .events-page-container h1,
+        .events-page-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .events-page-container .lead-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1em;
+            color: var(--text-dark);
+        }
+
+        .event-category {
+            margin-bottom: 3rem;
+        }
+
+        .event-cards-container {
+            display: flex; /* Use flexbox for centering */
+            flex-wrap: wrap; /* Allow items to wrap to next line */
+            justify-content: center; /* Center items horizontally when few */
+            gap: 25px; /* Space between cards */
+            margin-top: 1.5rem;
+        }
+
+        /* Make the whole card clickable */
+        .event-card-link {
+            text-decoration: none; /* Remove underline from the link */
+            color: inherit; /* Inherit text color from parent */
+            display: block; /* Make the anchor fill the area */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .event-card-link:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-card {
+            background-color: var(--background-card);
+            border-radius: 10px; /* Keep overall card rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Lighter shadow for simple cards */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content vertically */
+            padding: 15px; /* Padding inside the card */
+            width: 100%; /* Ensure card fills its content, but responsive below */
+            max-width: 200px; /* Max width for consistent sizing */
+            text-align: center; /* Center text */
+            min-height: 220px; /* Give it a minimum height to accommodate content */
+        }
+
+        .event-image-wrapper {
+            width: 150px; /* Medium size for the circle */
+            height: 150px;
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Crop content to circle */
+            border: 3px solid var(--primary-color); /* Add a border around the circle */
+            display: flex; /* Use flexbox to center image within wrapper */
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px; /* Space between image and title */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-circular-img {
+            width: 100%; /* Image fills the circle wrapper */
+            height: 100%;
+            object-fit: cover; /* Crop image to fit circle */
+        }
+
+        .event-card .card-content {
+            flex-grow: 0; /* No need to grow */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center event name and status */
+            justify-content: center;
+        }
+
+        .event-card h3 {
+            font-size: 1.1em; /* Smaller font for event name */
+            margin: 0; /* Remove default margins */
+            color: var(--primary-color);
+            line-height: 1.3;
+            font-weight: 600; /* Slightly bolder */
+        }
+
+        .event-card p.event-status { /* Ensure status is styled for the simple card */
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-top: 10px; /* Space between title and status */
+            text-transform: uppercase;
+        }
+
+        /* Status specific colors (same as before) */
+        .event-status.ongoing {
+            background-color: #FFA726; /* Orange */
+        }
+        .event-status.upcoming {
+            background-color: var(--secondary-color); /* Green */
+        }
+        .event-status.previous {
+            background-color: #6C757D; /* Gray */
+        }
+
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .events-page-container {
+                padding: 1rem;
+            }
+            .event-cards-container {
+                gap: 15px;
+            }
+            .event-card {
+                padding: 10px;
+                min-height: 180px;
+                max-width: 150px; /* Adjust max-width for smaller screens */
+            }
+            .event-image-wrapper {
+                width: 100px; /* Smaller circle on mobile */
+                height: 100px;
+                margin-bottom: 10px;
+            }
+            .event-card h3 {
+                font-size: 1em;
+            }
+        }
+
+
+        /* Event Detail Page Styles (Keeping the previous rectangular image design) */
+        .event-detail-container {
+            padding: 2rem;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--background-card);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-detail-container h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 2.2em;
+        }
+
+        .event-detail-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .event-detail-img { /* This is for the detail page, remains rectangular */
+            max-width: 100%;
+            height: 400px; /* Larger fixed height for detail image */
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .event-detail-info p {
+            font-size: 1.1em;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .event-detail-info h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .event-action {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Responsive adjustments for smaller screens (for event detail) */
+        @media (max-width: 768px) {
+            .event-detail-img {
+                height: 250px; /* Adjust height for smaller screens */
+            }
+        }
+
+        /* Additional specific styles */
+        .registration-closed-message {
+            font-size: 1.1em;
+            color: #DC3545; /* A common red for alerts */
+            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        /* New styles for Team Cards */
+        .our-team-section {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: var(--background-card);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            text-align: center; /* Center the heading */
+        }
+
+        .our-team-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .team-cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 1.5rem;
+        }
+
+        .team-card {
+            background-color: var(--background-card);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 180px; /* Smaller cards for team members */
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-member-image {
+            width: 120px; /* Circular image size */
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--accent-color); /* Border using accent color */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-card h3 {
+            font-size: 1.1em;
+            margin: 0 0 5px 0;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .team-card p {
+            font-size: 0.9em;
+            color: #6C757D; /* A soft gray for roles */
+            margin: 0;
+        }
+
+        /* Responsive adjustments for smaller screens (for team cards) */
+        @media (max-width: 768px) {
+            .team-card {
+                padding: 15px;
+                max-width: 140px;
+            }
+            .team-member-image {
+                width: 90px;
+                height: 90px;
+            }
+            .team-card h3 {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Events</a>
+            <a href="#">Contact</a>
+            <a href="#">About</a>
+            <div class="profile-dropdown">
+                <div class="profile-circle" onclick="toggleDropdown()">
+                    <img src="https://placehold.co/40x40/4A90E2/FFFFFF?text=P" alt="Profile Picture">
+                </div>
+                <div class="dropdown-content" id="profileDropdown">
+                    <a href="#">Profile</a>
+                    <button class="dropdown-logout-button">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-us-section">
+            <h1>About Us</h1>
+            <p>
+                Welcome to our platform! We are dedicated to building a vibrant and inclusive community around shared interests and passions. Our goal is to provide a seamless and engaging experience for connecting people through various events and activities.
+            </p>
+            <p>
+                Founded in [Year], we started with a simple idea: to make it easier for individuals to discover, participate in, and even organize events that matter to them. Whether you're looking to learn a new skill, meet like-minded individuals, or simply have fun, we've got something for everyone.
+            </p>
+            <p>
+                Our team is a diverse group of **8** enthusiasts, developers, and community managers who are passionate about bringing people together. We believe that shared experiences enrich lives and foster stronger communities. We are constantly working to improve our platform and expand our offerings, ensuring that you always find something exciting to engage with.
+            </p>
+            <p>
+                Join us on this journey as we continue to grow and create more opportunities for connection and collaboration. We are committed to transparency, innovation, and user satisfaction.
+            </p>
+
+            <div class="homepage-image-section">
+                <img src="https://placehold.co/800x400/63B179/FFFFFF?text=Our+Community" alt="Community picture">
+                <p class="image-caption">
+                    Connecting people and building stronger communities.
+                </p>
+            </div>
+
+            <h2>Our Mission</h2>
+            <p>
+                To empower individuals to connect, learn, and grow by providing an intuitive and dynamic platform for discovering and participating in a wide array of events and activities.
+            </p>
+
+            <h2>Our Values</h2>
+            <ul>
+                <li><strong>Community:</strong> Fostering a sense of belonging and collaboration.</li>
+                <li><strong>Innovation:</strong> Continuously improving our platform and offerings.</li>
+                <li><strong>Accessibility:</strong> Making events and connections available to everyone.</li>
+                <li><strong>Integrity:</strong> Operating with transparency and trust.</li>
+                <li><strong>Engagement:</strong> Creating meaningful and memorable experiences.</li>
+            </ul>
+        </section>
+
+        <!-- New Section for Team Members -->
+        <section class="our-team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-cards-container">
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/4A90E2/FFFFFF?text=M1" alt="Team Member 1" class="team-member-image">
+                    <h3>Member One</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/63B179/FFFFFF?text=M2" alt="Team Member 2" class="team-member-image">
+                    <h3>Member Two</h3>
+                    <p>Product Manager</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/F8D88E/3C4858?text=M3" alt="Team Member 3" class="team-member-image">
+                    <h3>Member Three</h3>
+                    <p>UX Designer</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/4A90E2/FFFFFF?text=M4" alt="Team Member 4" class="team-member-image">
+                    <h3>Member Four</h3>
+                    <p>Marketing Specialist</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/63B179/FFFFFF?text=M5" alt="Team Member 5" class="team-member-image">
+                    <h3>Member Five</h3>
+                    <p>Community Manager</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/F8D88E/3C4858?text=M6" alt="Team Member 6" class="team-member-image">
+                    <h3>Member Six</h3>
+                    <p>Backend Engineer</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/4A90E2/FFFFFF?text=M7" alt="Team Member 7" class="team-member-image">
+                    <h3>Member Seven</h3>
+                    <p>Content Creator</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://placehold.co/120x120/63B179/FFFFFF?text=M8" alt="Team Member 8" class="team-member-image">
+                    <h3>Member Eight</h3>
+                    <p>Quality Assurance</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("profileDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-circle') && !event.target.matches('.profile-circle img')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

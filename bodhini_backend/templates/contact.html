@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Bodhini{% endblock %}
+
+{% block content %}
+    <h1>Contact Us</h1>
+    <p>Fill out the form below to get in touch.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} {# Renders each field wrapped in a <p> tag #}
+        <button type="submit">Send Message</button>
+    </form>
+{% endblock %}
