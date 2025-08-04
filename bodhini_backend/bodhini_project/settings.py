@@ -17,10 +17,16 @@ PROJECT_ROOT = os.path.dirname(BASE_DIR)
 SECRET_KEY = 'u184wm2v95' # IMPORTANT: Replace with a strong, unique key in production!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+# ...existing code...
+ALLOWED_HOSTS = [
+    
+    'bodhini-2ndn.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
+# ...existing code...
 
 # Application definition
 
@@ -137,7 +143,7 @@ STATIC_URL = '/static/' # The URL prefix for static files
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'), # Points to your 'bodhini_backend/static/' folder
 ]
-# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles') # Uncomment and run collectstatic for production deployment
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles') # Uncomment and run collectstatic for production deployment
 
 
 # Media files (for user uploads like profile pictures)
