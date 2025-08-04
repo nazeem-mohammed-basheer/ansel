@@ -1079,3 +1079,27 @@ form p .errorlist {
         font-size: 0.9em;
     }
 }
+/* Add this at the end of your file for extra consistency */
+
+/* Prevent font scaling on mobile (optional, for more uniform look) */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Force body width to device width */
+body {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+/* Remove tap highlight color on mobile for cleaner look */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Make all content use border-box for sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
