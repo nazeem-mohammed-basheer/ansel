@@ -21,7 +21,11 @@ DEBUG = False
 
 # ...existing code...
 ALLOWED_HOSTS = [
+<<<<<<< HEAD
     
+=======
+    'bodhini-gve6.onrender.com',
+>>>>>>> 25e7513a248a290a0ef8528c77a3adceac0621e0
     'bodhini-2ndn.onrender.com',
     'localhost',
     '127.0.0.1'
